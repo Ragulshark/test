@@ -1,23 +1,25 @@
-name: Test InfinityFree FTP Connection
+name: Deploy to InfinityFree
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master  # change to 'main' if your default branch is main
 
 jobs:
-  ftp-test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Test FTP connection
-        env:
-          FTP_USERNAME: ${{ secrets.FTP_NAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Upload files to InfinityFree
         run: |
-          set -e
-          sudo apt-get update
-          sudo apt-get install -y ftp
-          echo "open ftpupload.net" > ftp.txt
-          echo "$FTP_USERNAME" >> ftp.txt
-          echo "$FTP_PASSWORD" >> ftp.txt
-          echo "quit" >> ftp.txt
-          ftp -n < ftp.txt
-          rm -f ftp.txt
+          lftp -u "${{ secrets.FTP_USER }}","${{ secrets.FTP_PASSWORD }}" ftpupload.net <<EOF
+          set ftp:ssl-allow no
+          set ftp:passive-mode on
+          mirror -R ./ /htdocs/
+          bye
+          EOF
