@@ -1,25 +1,26 @@
-name: Deploy to InfinityFree
+name: 🚀 Deploy to test-github.free.nf
 
 on:
+  workflow_dispatch: # Uncomment below to deploy on push instead
   push:
     branches:
-      - master  # change to 'main' if your default branch is main
+      - main
 
 jobs:
   deploy:
+    name: 🎉 Deploy to your_domain_name
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
 
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
-
-      - name: Upload files to InfinityFree
-        run: |
-          lftp -u "${{ secrets.FTP_USER }}","${{ secrets.FTP_PASSWORD }}" ftpupload.net <<EOF
-          set ftp:ssl-allow no
-          set ftp:passive-mode on
-          mirror -R ./ /htdocs/
-          bye
-          EOF
+      - name: 📂 Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftpupload.net # Change if using another host
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /htdocs/ # Replace with your correct path
+          retries: 3
+          retryDelay: 10
