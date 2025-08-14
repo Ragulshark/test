@@ -2,7 +2,7 @@ name: 🚀 Deploy to test-github.free.nf
 run-name: 🎉 Deploy to your_domain_name
 
 on:
-  workflow_dispatch: # Uncomment below to deploy on push instead
+
   push:
     branches:
       - main
