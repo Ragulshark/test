@@ -1,18 +1,23 @@
 name: Test InfinityFree FTP Connection
 
 on:
-  workflow_dispatch: # run manually from GitHub Actions
+  workflow_dispatch:
 
 jobs:
   ftp-test:
     runs-on: ubuntu-latest
     steps:
       - name: Test FTP connection
+        env:
+          FTP_USERNAME: ${{ secrets.FTP_NAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
+          set -e
           sudo apt-get update
           sudo apt-get install -y ftp
           echo "open ftpupload.net" > ftp.txt
-          echo "if0_39705033" >> ftp.txt
-          echo "ragulgamer27" >> ftp.txt
+          echo "$FTP_USERNAME" >> ftp.txt
+          echo "$FTP_PASSWORD" >> ftp.txt
           echo "quit" >> ftp.txt
           ftp -n < ftp.txt
+          rm -f ftp.txt
