@@ -1,4 +1,5 @@
-name: 🚀 Deploy to https://test-github.free.nf/
+name: 🚀 Deploy to test-github.free.nf
+run-name: 🎉 Deploy to your_domain_name
 
 on:
   workflow_dispatch: # Uncomment below to deploy on push instead
@@ -8,9 +9,7 @@ on:
 
 jobs:
   deploy:
-    name: 🎉 Deploy to your_domain_name
     runs-on: ubuntu-latest
-run-name: 
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
