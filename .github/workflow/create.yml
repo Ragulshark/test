@@ -1,1 +1,25 @@
 
+name: Publish Website to InfinityFree
+
+on:
+  push:
+    branches:
+      - master   # or main, depending on your repo
+
+jobs:
+  FTP-Deploy-Action:
+    name: FTP Deploy Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+        with:
+          fetch-depth: 2
+
+      - name: FTP Deploy Action
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+          server: ${{ secrets.FTP_HOSTNAME }}
+          username: ${{ secrets.FTP_NAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./   # folder in your repo to upload
+          server-dir: /htdocs/   # InfinityFree default public folder
