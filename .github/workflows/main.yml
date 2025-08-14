@@ -1,5 +1,4 @@
 name: 🚀 Deploy to test-github.free.nf
-run-name: 🎉 Deploy to your_domain_name
 
 on:
 
