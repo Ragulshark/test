@@ -1,25 +1,18 @@
-
-name: Publish Website to InfinityFree
+name: Test InfinityFree FTP Connection
 
 on:
-  push:
-    branches:
-      - master   # or main, depending on your repo
+  workflow_dispatch: # run manually from GitHub Actions
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP Deploy Action
+  ftp-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
-        with:
-          fetch-depth: 2
-
-      - name: FTP Deploy Action
-        uses: SamKirkland/FTP-Deploy-Action@3.1.1
-        with:
-          server: ${{ secrets.FTP_HOSTNAME }}
-          username: ${{ secrets.FTP_NAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./   # folder in your repo to upload
-          server-dir: /htdocs/   # InfinityFree default public folder
+      - name: Test FTP connection
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ftp
+          echo "open ftpupload.net" > ftp.txt
+          echo "if0_39705033" >> ftp.txt
+          echo "ragulgamer27" >> ftp.txt
+          echo "quit" >> ftp.txt
+          ftp -n < ftp.txt
