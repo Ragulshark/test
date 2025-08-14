@@ -10,7 +10,7 @@ jobs:
   deploy:
     name: 🎉 Deploy to your_domain_name
     runs-on: ubuntu-latest
-
+run-name: 
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
